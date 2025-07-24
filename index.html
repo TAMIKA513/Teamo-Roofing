@@ -6,6 +6,8 @@
   <h1>TEAMO ROOFING 🏠</h1>
 <div style="position: absolute; right: 2rem; top: 1.5rem;">
   <span style="font-size: 1.1rem;">🛒 Cart: <strong id="cart-count">0</strong></span>
+<button style="z-index: 7;" id="cart-toggle">View Cart</button>
+
 </div>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -330,10 +332,41 @@ h2::after {
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       z-index: 3;
     }
+    .cart h2 {
+      margin-top: 0;
+    }
     .cart-item {
       border-bottom: 1px solid #ddd;
       padding: 5px 0;
+      
     }
+    #clear-cart{
+  width:100%;
+  margin-top:10px;
+  padding:8px 12px;
+  background:#e11d48;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+  z-index: 5;
+}
+.cart{display:none;}  /* start hidden */
+.cart.show{display:block;}
+button {
+  background: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+button:hover {
+  background: #0056b3;
+}
   </style>
   <meta name="description" content="TEAMO Roofing - Kenya's trusted source for quality Mabati and construction supplies.">
 <meta property="og:title" content="TEAMO Roofing & Construction">
@@ -357,7 +390,7 @@ h2::after {
 
   <header class="hero">
     <div class="hero-content">
-      <h1>TEAMO ROOFING & CONSTRUCTION</h1>
+      <h1>TEAMO ROOFING & CONSTRUCTION</h1> 
       <img src="image2323.jpeg" width="400px" height="200px">
       <p>Your Trusted Partner for Quality Mabati</p>
       <a href="#order" class="cta-button">Order Now</a>
@@ -367,6 +400,7 @@ h2::after {
         <input type="checkbox" id="darkToggle">
         <span class="slider"></span>
       </label>
+      
     </div>
   </header>
   <nav style="position:relative;width:100%;z-index:1;background:#ffffffcc;backdrop-filter:blur(10px);z-index:999;display:flex;justify-content:center;gap:2rem;padding:1rem 0;">
@@ -376,7 +410,7 @@ h2::after {
   <a href="#additionals">Additionals</a>
 </nav>
 <div class="badge">
-  <span>✔ 10-Year Warranty</span>
+  <span>✔ 15-Year Warranty</span>
   <span>📦 Fast Delivery</span>
   <span>🏗 Expert Installation</span>
 </div>
@@ -404,7 +438,15 @@ h2::after {
     <h2>🛒 Cart</h2>
     <div id="cart-items"></div>
     <p><strong>Total: </strong>KSh <span id="cart-total">0</span></p>
+    
+    <button id="clear-cart" onclick="clearCart()">
+    Clear Cart
+  </button>
+  <button onclick="sendOrderToGoogleForm()">📤 Submit Order</button>
+
   </div>
+ 
+
 
   <h2 id="additionals" style="text-align:center; margin: 2rem 0; color: inherit;">Additionals</h2>
   <div class="card-container">
@@ -430,7 +472,7 @@ h2::after {
 
   <div class="form-section" id="order">
     <h2>Order Now</h2>
-    <p><a href="https://forms.gle/k9TkkkyPCK5trhG16" target="_blank">Prefer Google Form? Click here</a></p>
+    <p><a href="https://forms.gle/U9h7XvkmtjhPfhsk6" target="_blank">Prefer Google Form? Click here</a></p>
   
 <form action="register.php" method="POST">
   <label>Full Name</label>
@@ -473,9 +515,21 @@ h2::after {
   <div class="form-section" id="contact">
     <h2>Contact Us</h2>
     <p>We'd love to hear from you! Get in touch for inquiries, partnerships, or custom orders.</p>
-    <p>Email: <a href="mailto:info@teamoroofing.co.ke">info@teamoroofing.co.ke</a></p>
+    <p>Email: <a href="mailto:teamoroofing@gmail.com">teamoroofing@gmail.com</a></p>
     <p>Phone: <a href="tel:+254720288049">+254 720 288 049</a></p>
   </div>
+
+  <form id="googleForm" action="https://docs.google.com/forms/d/e/1FAIpQLSc1aS3fLQGnepudrGHVRXArCMQT6qZZM4xqI6eMvU4YylfW6A/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;" style="display:none;">
+  <input name="entry.99175479" id="fullNameField" type="text">
+  <input name="entry.1823442032" id="phoneNumberField" type="text">
+  <input name="entry.2141523796" id="cartDetailsField" type="text">
+  <input name="entry.319658412" id="totalPriceField" type="text">
+  <input name="entry.1292066389" id="paymentMethodField" type="text">
+  <input name="entry.379801329" id="productionDateField" type="text">
+</form>
+
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
 
   <footer>
     &copy; 2025 TEAMO Roofing. All rights reserved.
@@ -485,7 +539,7 @@ h2::after {
     <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png"/>
   </a>
 
-  <script>
+<script>
   tsParticles.load("tsparticles", {
     fullScreen: { enable: false },
     background: { color: "transparent" },
@@ -512,30 +566,90 @@ h2::after {
     });
   });
 
-  const cart = [];
-  let total = 0;
+  const cart = {};
 
   function addToCart(name, price) {
-    cart.push({ name, price });
-    total += price;
+    if (cart[name]) {
+      cart[name].quantity += 1;
+    } else {
+      cart[name] = { price, quantity: 1 };
+    }
     renderCart();
   }
 
   function renderCart() {
     const cartItems = document.getElementById('cart-items');
     cartItems.innerHTML = '';
+    let total = 0;
+    let count = 0;
 
-    cart.forEach(item => {
+    for (const name in cart) {
+      const item = cart[name];
       const div = document.createElement('div');
       div.className = 'cart-item';
-      div.textContent = `${item.name} - KSh ${item.price}`;
+      div.textContent = `${name} x${item.quantity} - KSh ${item.price * item.quantity}`;
       cartItems.appendChild(div);
-    });
+      total += item.price * item.quantity;
+      count += item.quantity;
+    }
 
     document.getElementById('cart-total').textContent = total;
-    document.getElementById('cart-count').textContent = cart.length;
+    document.getElementById('cart-count').textContent = count;
   }
-</script>
 
+  function clearCart() {
+    for (const item in cart) {
+      delete cart[item];
+    }
+    renderCart();
+  }
+
+  document.getElementById('cart-toggle').onclick = () =>
+    document.getElementById('cart').classList.toggle('show');
+
+  // New function to handle submission from the cart with direct input values
+  function sendOrderFromCartToGoogleForm() {
+    const fullName = document.getElementById("fullName").value.trim();
+    const phoneNumber = document.getElementById("phoneNumber").value.trim();
+    const paymentMethod = document.getElementById("paymentMethod").value.trim();
+    const productionDate = document.getElementById("productionDate").value;
+
+    if (!fullName || !phoneNumber || !paymentMethod || !productionDate) {
+      alert("Please fill in all order details (Full Name, Phone Number, Payment Method, Production Date) before submitting.");
+      return;
+    }
+
+    if (Object.keys(cart).length === 0) {
+      alert("Your cart is empty. Please add items before submitting an order.");
+      return;
+    }
+
+    let cartDetails = '';
+    let total = 0;
+
+    for (const name in cart) {
+      const item = cart[name];
+      cartDetails += `${name} x${item.quantity} = KSh ${item.price * item.quantity}\n`;
+      total += item.price * item.quantity;
+    }
+
+    // Populate the hidden Google Form fields
+    document.getElementById("fullNameField").value = fullName;
+    document.getElementById("phoneNumberField").value = phoneNumber;
+    document.getElementById("paymentMethodField").value = paymentMethod;
+    document.getElementById("productionDateField").value = productionDate;
+    document.getElementById("cartDetailsField").value = cartDetails;
+    document.getElementById("totalPriceField").value = total;
+
+    // Submit the hidden form
+    document.getElementById("googleForm").submit();
+
+    alert("✅ Order submitted successfully!");
+    clearCart(); // Optionally clear the cart after successful submission
+  }
+
+  // Ensure the "Submit Order" button in the cart calls the correct function
+  document.querySelector('#cart button[onclick="sendOrderToGoogleForm()"]').onclick = sendOrderFromCartToGoogleForm;
+</script>
 </body>
 </html>
