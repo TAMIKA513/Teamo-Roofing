@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <h1>TEAMO ROOFING 🏠</h1>
+<div style="position: absolute; right: 2rem; top: 1.5rem;">
+  <span style="font-size: 1.1rem;">🛒 Cart: <strong id="cart-count">0</strong></span>
+</div>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
+  <style>
+    :root {
+      --primary: #0e703d;
+      --background-light: #edf1ee;
+      --background-dark: #1c1c1c;
+      --text-light: #2c2c2c;
+      --text-dark: #f5f5f5;
+      --card-bg-light: rgba(255, 255, 255, 0.1);
+      --card-bg-dark: rgba(40, 40, 40, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text-light);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      color: var(--text-dark);
+  background: #121212;
+  backdrop-filter: blur;/* or a dark blurred version of the current background */
+
+
+    }
+
+    #tsparticles {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    header.hero {
+      background: linear-gradient(to right, #22a7a0, #14b170);
+      color: white;
+      text-align: center;
+      padding: 3rem 1rem;
+      border-radius: 0 0 40px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      animation: fadeIn 1.5s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-btn {
+      background: white;
+      color: var(--primary);
+      font-weight: bold;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      margin-top: 1rem;
+      display: inline-block;
+      transition: 0.3s ease;
+    }
+
+    .cta-btn:hover {
+      background: var(--text-light);
+      color: white;
+    }
+
+    .blob {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2), transparent);
+      border-radius: 50%;
+      filter: blur(120px);
+      animation: float 10s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    .blob:nth-child(1) { top: -50px; left: -50px; background: #14b15866; }
+    .blob:nth-child(2) { bottom: 50px; right: 50px; background: #0e703d66; animation-delay: 2s; }
+    .blob:nth-child(3) { top: 30%; left: 60%; background: #00bcd466; animation-delay: 4s; }
+    .blob:nth-child(4) { bottom: 20%; left: 10%; background: #2196f366; animation-delay: 6s; }
+    .blob:nth-child(5) { top: 10%; right: 10%; background: #00968866; animation-delay: 8s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      100% { transform: translateY(20px) translateX(20px); }
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      background: var(--card-bg-light);
+      backdrop-filter: blur(20px);
+      padding: 1.5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+      color: inherit;
+      border: 3px solid;
+       background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+       backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+     border: 1px solid rgba(255, 255, 255, 0.3) ;
+     border-image: linear-gradient(45deg, #f59e0b, #10b981) 1;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    body.dark-mode .card {
+      background-color: var(--card-bg-dark);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .form-section {
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      border-radius: 20px;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s;
+      color: inherit;
+      z-index:1;
+      position: relative;
+    }
+
+    .form-section input,
+    .form-section select {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .form-section input[type="submit"] {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: 0.3s ease;
+    }
+
+    .form-section input[type="submit"]:hover {
+      background-color: #0a5c32;
+    }
+
+    .toggle-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+    }
+
+    .toggle-container input {
+      display: none;
+    }
+
+    .slider {
+      width: 50px;
+      height: 24px;
+      background-color: #ccc;
+      border-radius: 34px;
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      background-color: white;
+      border-radius: 50%;
+      bottom: 2px;
+      left: 2px;
+      transition: 0.4s;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(26px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: var(--primary);
+      color: white;
+      margin-top: 3rem;
+    }
+
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    #tsparticles,
+.blob {
+  pointer-events: none;
+}
+.form-section,
+.search-box,
+.card,
+input,
+textarea,
+button {
+  position: relative;
+  z-index: 1;
+}
+h2::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #f43f5e, #3b82f6);
+  margin: 0.5rem auto;
+  border-radius: 4px;
+}
+.badge {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  color: white;
+  font-weight: bold;
+  background: linear-gradient(90deg, #4c7eeb, #723dd4);
+  border-radius: 12px;
+  margin: 2rem auto;
+  max-width: 90%;
+}
+.stars {
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  font-size: 2rem;
+  animation: floatStars 4s infinite ease-in-out alternate;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes floatStars {
+  0% { transform: translateY(0); opacity: 0.6; }
+  100% { transform: translateY(-20px); opacity: 1; }
+}
+.cta-button {
+  background: linear-gradient(90deg, #46ebd5, #06b6d4);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+  transition: transform 0.3s ease;
+  display: inline-block;
+      margin-top: 1.5rem;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(99, 205, 231, 0.7); }
+  70% { box-shadow: 0 0 0 20px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+    .cart {
+      position: fixed;
+      top: 60px;
+      right: 20px;
+      background: #ffffffd0;
+      border: 2px solid #333;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 3;
+    }
+    .cart-item {
+      border-bottom: 1px solid #ddd;
+      padding: 5px 0;
+    }
+  </style>
+  <meta name="description" content="TEAMO Roofing - Kenya's trusted source for quality Mabati and construction supplies.">
+<meta property="og:title" content="TEAMO Roofing & Construction">
+<meta property="og:description" content="Order Decra, Versatile, Box Profile, and all your roofing accessories.">
+<meta property="og:image" content="https://yourdomain.com/thumbnail.jpg">
+<meta property="og:url" content="https://teamoroofing.co.ke">
+
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <div class="stars">&#10024; &#x2728; &#x2605;</div>
+
+  <div class="blob"></div>
+  <div class="blob"></div>
+  <div class="blob"></div>
+  <div class="blob"></div>
+  <div class="blob"></div>
+  <div id="tsparticles"></div>
+
+  <header class="hero">
+    <div class="hero-content">
+      <h1>TEAMO ROOFING & CONSTRUCTION</h1>
+      <img src="image2323.jpeg" width="400px" height="200px">
+      <p>Your Trusted Partner for Quality Mabati</p>
+      <a href="#order" class="cta-button">Order Now</a>
+    </div>
+    <div class="toggle-container">
+      <label>
+        <input type="checkbox" id="darkToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+  <nav style="position:relative;width:100%;z-index:1;background:#ffffffcc;backdrop-filter:blur(10px);z-index:999;display:flex;justify-content:center;gap:2rem;padding:1rem 0;">
+  <a href="#order">Order</a>
+  <a href="#contact">Contact</a>
+  <a href="#our best mabati options">Products</a>
+  <a href="#additionals">Additionals</a>
+</nav>
+<div class="badge">
+  <span>✔ 10-Year Warranty</span>
+  <span>📦 Fast Delivery</span>
+  <span>🏗 Expert Installation</span>
+</div>
+<input type="text" id="search" placeholder="Search mabati..." style="margin:2rem auto;display:block;width:60%;padding:1rem;">
+
+
+  <h2 id="Products" style="text-align:center; margin: 2rem 0; color: inherit;">Our Best Mabati Options</h2>
+  <div class="card-container">
+    <div class="card"> <img src="mabati.jpeg" loading="lazy"><h3>Decra</h3><p>Ksh. 800 per pc</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('decra', 800)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati2.jpeg"><h3>Versatile Matte 30g</h3><p>Ksh. 650 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('versatile matte 30g',650,'per m')">Add To Cart</button> </div>
+    <div class="card"><img src="mabati12.jpeg"><h3>Versatile Matte 28g</h3><p>Ksh. 750 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('versatile matte 28g',750)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati3.jpeg"><h3>Versatile Glossy 30g</h3><p>Ksh. 620 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('versatile glossy 30g',620)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati4.jpeg"><h3>Versatile Glossy 28g</h3><p>Ksh. 720 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('versatile glossy 28g',720)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati5.jpeg"><h3>Box Profile Glossy 30g</h3><p>Ksh. 550 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('box profile glossy 30g',550)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati6.jpeg"><h3>Box Profile Glossy 28g</h3><p>Ksh. 680 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('box profile glossy 28g',680)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati7.jpeg"><h3>Corrugated Glossy 30g</h3><p>Ksh. 550 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('corrugated glossy 30g',550)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati8.jpeg"><h3>Corrugated Glossy 28g</h3><p>Ksh. 680 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('corrugated glossy 28g',680)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati9.jpeg"><h3>Eurotile Matte 30g</h3><p>Ksh. 680 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('eurotile matte 30g',680)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati9.jpeg"><h3>Eurotile Matte 28g</h3><p>Ksh. 750 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('eurotile matte 28g',750)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati10.jpeg"><h3>Roman Tile Matte 30g</h3><p>Ksh. 680 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('roman tile matte 30g',680)">Add To Cart</button> </div>
+    <div class="card"><img src="mabati11.jpeg"><h3>Roman Tile Matte 28g</h3><p>Ksh. 780 per meter</p><a href="#order" class="cta-btn">Order Now</a> <button onclick="addToCart('roman tile matte 28g',780)">Add To Cart</button> </div>
+  
+  </div>
+  <div class="cart" id="cart">
+    <h2>🛒 Cart</h2>
+    <div id="cart-items"></div>
+    <p><strong>Total: </strong>KSh <span id="cart-total">0</span></p>
+  </div>
+
+  <h2 id="additionals" style="text-align:center; margin: 2rem 0; color: inherit;">Additionals</h2>
+  <div class="card-container">
+    <div class="card"><img src="additionals1.jpeg"><h3>PVC Gutters(4M/pc,6pcs/bag)</h3><p>Ksh. 1450 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Pvc gutter per pc',1450)">Add To Cart</button></div>
+    <div class="card"><img src="additionals2.jpeg"><h3>Downspout(4M/pc,6pcs/bag)</h3><p>Ksh. 1250 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Dowspout per pc',1250)">Add To Cart</button></div>
+    <div class="card"><img src="additionals3.jpeg"><h3>Drop Outlet(14pcs/ctn)</h3><p>Ksh. 500 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Drop Outlet per pc',500)">Add To Cart</button></div>
+    <div class="card"><img src="additionals4.jpeg"><h3>Hanger Single Hole(220pcs/ctn)</h3><p>Ksh. 150 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Hanger Single Hole per pc',150)">Add To Cart</button></div>
+    <div class="card"><img src="additionals5.jpeg"><h3>135°/90° Outside Corner(10pcs/ctn)</h3><p>Ksh. 500 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('135°/90° Outside Corner per pc',500)">Add To Cart</button></div>
+<div class="card"><img src="additionals6.jpeg"><h3>90° Inside Corner(8pcs/ctn)</h3><p>Ksh. 500 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('90° Inside Corner per pc',500)">Add To Cart</button></div>
+<div class="card"><img src="additionals7.jpeg"><h3>End Cup(28 pairs/ctn)</h3><p>Ksh. 500 per pair</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('End Cup per pair',500)">Add To Cart</button></div>
+<div class="card"><img src="additionals8.jpeg"><h3>Gutter Connector(32pcs/ctn)</h3><p>Ksh. 400 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Gutter Connecter per pc',400)">Add To Cart</button></div>
+<div class="card"><img src="additionals9.jpeg"><h3>Pipe Joint(81pcs/ctn)</h3><p>Ksh. 250 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Pipe Joint per pc',250)">Add To Cart</button></div>
+<div class="card"><img src="additionals10.jpeg"><h3>65°Elbow(36pcs/ctn)</h3><p>Ksh. 250 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('65° Elbow per pc',250)">Add To Cart</button></div>
+<div class="card"><img src="additionals11.jpeg"><h3>65°DIVerter(40pcs/ctn)</h3><p>Ksh. 250 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('65° DIVerter per pc',250)">Add To Cart</button></div>
+<div class="card"><img src="additionals12.jpeg"><h3>90°DIVerter(32pcs/ctn)</h3><p>Ksh. 250 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('90° DIVerter per pc',250)">Add To Cart</button></div>
+<div class="card"><img src="additionals13.jpeg"><h3>Pipe Band(Single Card)(220pcs/ctn)</h3><p>Ksh. 150 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Pipe Band per pc',150)">Add To Cart</button></div>
+<div class="card"><img src="additionals14.jpeg"><h3>Gypsum Screws(500pcs/box)</h3><p>Ksh. 900 per box</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Gypsum screws per box',900)">Add To Cart</button></div>
+<div class="card"><img src="additionals15.jpeg"><h3>Silicon(24pcs/box)</h3><p>Ksh. 500 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Silicone per pc',500)">Add To Cart</button></div>
+<div class="card"><img src="additionals16.jpeg"><h3>Skew Tee(20pcs/box)</h3><p>Ksh. 400 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Skew tee per pc',400)">Add To Cart</button></div>
+<div class="card"><img src="additionals17.jpeg"><h3>Converter(45pcs/box)</h3><p>Ksh. 350 per pc</p><a href="#order" class="cta-btn">Order Now</a><button onclick="addToCart('Converter per pc',350)">Add To Cart</button></div>
+
+  </div>
+
+  <div class="form-section" id="order">
+    <h2>Order Now</h2>
+    <p><a href="https://forms.gle/k9TkkkyPCK5trhG16" target="_blank">Prefer Google Form? Click here</a></p>
+  
+<form action="register.php" method="POST">
+  <label>Full Name</label>
+  <input type="text" name="full_name" required>
+
+  <label>Phone Number</label>
+  <input type="tel" name="phone_number" required>
+
+  <label>Mabati Type</label>
+  <input type="text" name="mabati" required placeholder="e.g Decra">
+
+  <label>Meter Per Mabati</label>
+  <input type="text" name="meter_per_mabati" placeholder="e.g. 1.5 meter long, 2 meters">
+
+  <label>Quantity</label>
+  <input type="number" name="quantity" required>
+
+  <label>Color</label>
+  <input type="text" name="color" required>
+
+  <label>Additionals and Quantity</label>
+  <input type="text" name="additionals_and_quantity" placeholder="e.g. PVC gutters/15pcs, gypsum screws/500 pcs">
+
+  <label>Payment Method</label>
+  <select name="payment" required>
+    <option value="">-- Select Payment --</option>
+    <option value="mpesa">Mpesa</option>
+    <option value="paypal">Paypal</option>
+    <option value="pay on production">Pay On Production</option>
+  </select>
+
+  <label>Production Date</label>
+  <input type="date" name="date" required>
+
+  <input type="submit" value="Submit Order">
+</form>
+
+  </div>
+
+  <div class="form-section" id="contact">
+    <h2>Contact Us</h2>
+    <p>We'd love to hear from you! Get in touch for inquiries, partnerships, or custom orders.</p>
+    <p>Email: <a href="mailto:info@teamoroofing.co.ke">info@teamoroofing.co.ke</a></p>
+    <p>Phone: <a href="tel:+254720288049">+254 720 288 049</a></p>
+  </div>
+
+  <footer>
+    &copy; 2025 TEAMO Roofing. All rights reserved.
+  </footer>
+
+  <a href="https://wa.me/254720288049" class="whatsapp-float" target="_blank">
+    <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png"/>
+  </a>
+
+  <script>
+  tsParticles.load("tsparticles", {
+    fullScreen: { enable: false },
+    background: { color: "transparent" },
+    particles: {
+      number: { value: 100 },
+      color: { value: "#ffffff" },
+      shape: { type: "circle" },
+      opacity: { value: 0.3 },
+      size: { value: 3 },
+      move: { enable: true, speed: 0.6 }
+    }
+  });
+
+  document.getElementById('darkToggle').addEventListener('change', function () {
+    document.body.classList.toggle('dark-mode');
+  });
+
+  document.getElementById("search").addEventListener("input", function () {
+    const cards = document.querySelectorAll(".card");
+    const query = this.value.toLowerCase();
+    cards.forEach(card => {
+      const content = card.textContent.toLowerCase();
+      card.style.display = content.includes(query) ? "block" : "none";
+    });
+  });
+
+  const cart = [];
+  let total = 0;
+
+  function addToCart(name, price) {
+    cart.push({ name, price });
+    total += price;
+    renderCart();
+  }
+
+  function renderCart() {
+    const cartItems = document.getElementById('cart-items');
+    cartItems.innerHTML = '';
+
+    cart.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.textContent = `${item.name} - KSh ${item.price}`;
+      cartItems.appendChild(div);
+    });
+
+    document.getElementById('cart-total').textContent = total;
+    document.getElementById('cart-count').textContent = cart.length;
+  }
+</script>
+
+</body>
+</html>
